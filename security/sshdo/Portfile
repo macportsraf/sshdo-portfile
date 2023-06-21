@@ -1,0 +1,66 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           makefile 1.0
+
+name                sshdo
+version             1.1.1
+revision            0
+
+categories          security
+license             GPL-2+
+maintainers         {raf.org:raf @macportsraf} openmaintainer
+description         controls which commands may be executed via incoming ssh
+long_description    {*}${description}. \
+                    \n\nsshdo provides an easily configurable way of controlling which \
+                    commands may be executed via incoming ssh connections by specific \
+                    users and specific keys. Training mode allows a key to be used for \
+                    any command, while logging them. Then sshdo can learn from the logs \
+                    to know what commands to allow. It can also unlearn commands that \
+                    are no longer in use. This mitigates against private ssh key compromise \
+                    with very little effort.
+
+homepage            https://raf.org/sshdo/
+master_sites        ${homepage}download/ \
+                    https://web.archive.org/web/20230618115533/${homepage}download/ \
+                    https://github.com/raforg/${name}/releases/download/v${version}/ \
+                    https://codeberg.org/raforg/${name}/releases/download/v${version}/
+checksums           rmd160 3071b9aa06452437f9da970f0576c94ea27d3c08 \
+                    sha256 9b22e14fec786b692e8d6431a81e9b17ad8f6e62ae5d6ef9e9c643690bf33f90 \
+                    size 79485
+
+# Note: Not a GNU autoconf configure script
+use_configure       yes
+configure.args      --macports-prefix=${prefix}
+build               {}
+
+test.run            yes
+
+destroot.keepdirs   ${destroot}${prefix}/etc/sshdoers.d
+
+notes {
+    sshdo relies on syslog messages to learn and unlearn policy.
+
+    On recent macOS systems with the unified logging system,
+    syslog messages don't look the same as elsewhere, and they no
+    longer appear in /var/log/system.log where sshdo expects them,
+    so you'll need to use the log(1) command to feed log messages
+    into sshdo via its standard input (stdin). See man sshdo.
+
+    Use the following command as the basis for your log queries:
+
+        log show --style syslog --info --predicate '
+            process == "Python" and
+            composedMessage contains "type=" and
+            composedMessage contains "user=" and
+            composedMessage contains "command="
+        ' | sed -E -e 's/Python/sshdo/' -e 's/: \([^)]+\)/:/'
+
+    You will also need to incorporate the appropriate time range
+    into the search criteria (e.g., --last 7d). See man log.
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}download/
+livecheck.regex     ${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}
+
