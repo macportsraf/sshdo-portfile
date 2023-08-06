@@ -7,9 +7,6 @@ name                sshdo
 version             1.1.1
 revision            0
 
-categories          security
-license             GPL-2+
-maintainers         {raf.org:raf @macportsraf} openmaintainer
 description         controls which commands may be executed via incoming ssh
 long_description    {*}${description}. \
                     \n\nsshdo provides an easily configurable way of controlling which \
@@ -19,20 +16,24 @@ long_description    {*}${description}. \
                     to know what commands to allow. It can also unlearn commands that \
                     are no longer in use. This mitigates against private ssh key compromise \
                     with very little effort.
+license             GPL-2+
+categories          security
+supported_archs     noarch
+maintainers         {raf.org:raf @macportsraf} openmaintainer
 
 homepage            https://raf.org/sshdo/
 master_sites        ${homepage}download/ \
                     https://web.archive.org/web/20230618115533/${homepage}download/ \
                     https://github.com/raforg/${name}/releases/download/v${version}/ \
                     https://codeberg.org/raforg/${name}/releases/download/v${version}/
-checksums           rmd160 3071b9aa06452437f9da970f0576c94ea27d3c08 \
-                    sha256 9b22e14fec786b692e8d6431a81e9b17ad8f6e62ae5d6ef9e9c643690bf33f90 \
-                    size 79485
+checksums           rmd160  3071b9aa06452437f9da970f0576c94ea27d3c08 \
+                    sha256  9b22e14fec786b692e8d6431a81e9b17ad8f6e62ae5d6ef9e9c643690bf33f90 \
+                    size    79485
 
 # Note: Not a GNU autoconf configure script
 use_configure       yes
 configure.args      --macports-prefix=${prefix}
-build               {}
+build {}
 
 test.run            yes
 
@@ -41,10 +42,10 @@ destroot.keepdirs   ${destroot}${prefix}/etc/sshdoers.d
 notes {
     sshdo relies on syslog messages to learn and unlearn policy.
 
-    On recent macOS systems with the unified logging system,
-    syslog messages don't look the same as elsewhere, and they no
-    longer appear in /var/log/system.log where sshdo expects them,
-    so you'll need to use the log(1) command to feed log messages
+    On recent macOS systems with the unified logging system,\
+    syslog messages don't look the same as elsewhere, and they no\
+    longer appear in /var/log/system.log where sshdo expects them,\
+    so you'll need to use the log(1) command to feed log messages\
     into sshdo via its standard input (stdin). See man sshdo.
 
     Use the following command as the basis for your log queries:
@@ -56,7 +57,7 @@ notes {
             composedMessage contains "command="
         ' | sed -E -e 's/Python/sshdo/' -e 's/: \([^)]+\)/:/'
 
-    You will also need to incorporate the appropriate time range
+    You will also need to incorporate the appropriate time range\
     into the search criteria (e.g., --last 7d). See man log.
 }
 
