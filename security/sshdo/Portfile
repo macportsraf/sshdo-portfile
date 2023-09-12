@@ -32,7 +32,7 @@ checksums           rmd160  3071b9aa06452437f9da970f0576c94ea27d3c08 \
 
 # Note: Not a GNU autoconf configure script
 use_configure       yes
-configure.args      --macports-prefix=${prefix}
+configure.args      --macports-prefix="${prefix}"
 build {}
 
 test.run            yes
