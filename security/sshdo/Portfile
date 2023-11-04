@@ -23,9 +23,9 @@ maintainers         {raf.org:raf @macportsraf} openmaintainer
 
 homepage            https://raf.org/sshdo/
 master_sites        ${homepage}download/ \
-                    https://web.archive.org/web/20230618115533/${homepage}download/ \
                     https://github.com/raforg/${name}/releases/download/v${version}/ \
-                    https://codeberg.org/raforg/${name}/releases/download/v${version}/
+                    https://codeberg.org/raforg/${name}/releases/download/v${version}/ \
+                    https://web.archive.org/web/20230618115533/${homepage}download/
 checksums           rmd160  3071b9aa06452437f9da970f0576c94ea27d3c08 \
                     sha256  9b22e14fec786b692e8d6431a81e9b17ad8f6e62ae5d6ef9e9c643690bf33f90 \
                     size    79485
