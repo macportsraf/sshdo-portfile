@@ -10,3 +10,16 @@ includes all four download sites, rather than just one.
 Actually, there is still no official Portfile for sshdo. It's been waiting
 months to be merged. Perhaps it never will be.
 
+# INSTALL
+
+You need your own set of ports to install this from:
+
+    cd ~/src
+	git clone https://github.com/macportsraf/sshdo-portfile
+	mkdir ~/ports
+	cp -pr sshdo-portfile/security ~/ports
+	rm -rf sshdo-portfile
+	cd ~/ports
+	portindex
+	echo file://$(pwd) >> /opt/local/etc/macports/sources.conf
+
